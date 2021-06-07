@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/screens/home_screens/home_screen.dart';
+import 'package:flutter_app_test/screens/login/screens/login.dart';
+import 'package:flutter_app_test/screens/splash/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,9 +13,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Vietnamese Cuisines App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      debugShowCheckedModeBanner: false,
+      routes: {
+        SplashScreen.id: (context) => SplashScreen(),
+        HomeScreen.id: (context) => HomeScreen(),
+        LoginScreen.id: (context) => LoginScreen(),
+      },
+      initialRoute: SplashScreen.id,
     );
   }
 }
