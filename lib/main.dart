@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         FavoriteScreen.id: (context) => FavoriteScreen(),
         UserScreen.id: (context) => UserScreen(),
       },
-      initialRoute: HomeScreen.id,
+      initialRoute: LoginScreen.id,
     );
   }
 }
