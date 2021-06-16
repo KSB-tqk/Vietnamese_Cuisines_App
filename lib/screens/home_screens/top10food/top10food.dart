@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
+import 'package:flutter_app_test/screens/home_screens/top10food/details_top_ten_foods.dart';
 
-class TopFood extends StatefulWidget {
-  const TopFood({key}) : super(key: key);
+class Top10Food extends StatelessWidget {
+  const Top10Food({key}) : super(key: key);
 
-  @override
-  _TopFoodState createState() => _TopFoodState();
-}
-
-class _TopFoodState extends State<TopFood> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,7 +56,9 @@ class _TopFoodState extends State<TopFood> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      Navigator.pushNamed(context, DetailsTopFood.id);
+                    },
                     child: Text(
                       "Khám phá ngay!",
                       style: TextStyle(

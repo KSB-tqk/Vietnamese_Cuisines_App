@@ -1,9 +1,11 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/notifier/food_notifier.dart';
 import 'package:flutter_app_test/screens/favorite_screen/favorite_screen.dart';
-import 'package:flutter_app_test/screens/home_screens/home_main_screen.dart';
+import 'package:flutter_app_test/screens/home_screens/components_homescreen/home_main_screen.dart';
 import 'package:flutter_app_test/screens/search_screen/search_screen.dart';
 import 'package:flutter_app_test/screens/user_screen/user_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static String id = 'HomeScreen';
@@ -14,6 +16,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void didChangeDependencies() {
+    FoodNotifier topFoodNotifier =
+        Provider.of<FoodNotifier>(context, listen: false);
+    topFoodNotifier.getFoods(topFoodNotifier);
+    super.didChangeDependencies();
+  }
+
   int currentIndex = 0;
 
   //list Page
