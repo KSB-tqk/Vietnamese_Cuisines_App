@@ -1,5 +1,6 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/notifier/food_notifier.dart';
 import 'package:flutter_app_test/screens/favorite_screen/favorite_screen.dart';
 import 'package:flutter_app_test/screens/home_screens/components_homescreen/home_main_screen.dart';
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(30),
           child: BottomNavyBar(
             curve: Curves.decelerate,
-            backgroundColor: Color(0xFFFE824D),
+            backgroundColor: kPrimaryColor,
             selectedIndex: currentIndex,
             onItemSelected: (index) {
               setState(() {

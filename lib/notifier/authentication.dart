@@ -1,30 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app_test/components/favorite.dart';
 import 'package:flutter_app_test/components/user.dart';
 
 class AuthenticationService with ChangeNotifier {
-  static FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  static FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  static UserFood userFood;
-
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  UserFood userFood;
+  FavoriteFood favoriteFood;
   AuthenticationService(_firebaseAuth);
 
   Stream<User> get authStateChange => _firebaseAuth.authStateChanges();
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
+
   }
 
   Future<String> signIn({String email, String password}) async {
-    String err = "Đăng nhập thành công!";
-    UserFood userFood;
+    String err = "Đăng nhập không thành công!";
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      return err;
+      return "Đăng nhập thành công!";
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "user-disabled":
@@ -46,13 +45,13 @@ class AuthenticationService with ChangeNotifier {
 
   Future<String> signUp(
       {String email, String password, String username}) async {
-    String err = "Đăng ký thành công!";
+    String err = "Đăng ký không thành công!";
     try {
       await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => print("Lay data"));
-      username = _firebaseAuth.currentUser.displayName;
-      return err;
+      await _firebaseAuth.currentUser.updateDisplayName(username);
+      return "Đăng ký thành công!";
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "email-already-in-use":
@@ -83,7 +82,8 @@ class AuthenticationService with ChangeNotifier {
     } else {
       userFood = UserFood(
           email: _firebaseAuth.currentUser.email,
-          userName: _firebaseAuth.currentUser.displayName,
+          userName: _firebaseAuth.currentUser.email
+              .substring(0, _firebaseAuth.currentUser.email.indexOf('@')),
           idUser: _firebaseAuth.currentUser.uid);
 
       await _firestore
@@ -91,6 +91,41 @@ class AuthenticationService with ChangeNotifier {
           .doc(_firebaseAuth.currentUser.uid)
           .set(userFood.toJson());
     }
+
+    await setFavoriteFoodUser();
+
     return null;
+  }
+
+  // Setup món danh sách món ăn yêu thích của từng User
+  Future setFavoriteFoodUser() async {
+    var snapshot =
+        await _firestore.collection('Favorite').doc(userFood.idUser).get();
+    if (snapshot.exists) {
+      favoriteFood = FavoriteFood.fromJson(snapshot.data());
+    } else {
+      favoriteFood = FavoriteFood(idUser: userFood.idUser, listIdFood: []);
+    }
+  }
+
+  // Thêm món ăn yêu thích vào list của User
+  Future updateFavorite(String idFood) async {
+    favoriteFood.listIdFood.add(idFood);
+    notifyListeners();
+    await _firestore
+        .collection('Favorite')
+        .doc(_firebaseAuth.currentUser.uid)
+        .set(favoriteFood.toJson());
+  }
+
+  // Xóa món ăn yêu thích khỏi list của User
+  Future deleteFavorite(String idFood) async {
+    favoriteFood.listIdFood.removeWhere((food)=> food==idFood);
+    notifyListeners();
+    await _firestore
+        .collection('Favorite')
+        .doc(_firebaseAuth.currentUser.uid)
+        .set(favoriteFood.toJson());
+
   }
 }

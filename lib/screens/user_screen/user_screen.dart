@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
-import 'package:flutter_app_test/screens/login/authentication/authentication.dart';
+import 'package:flutter_app_test/notifier/authentication.dart';
 import 'package:provider/provider.dart';
 
 class UserScreen extends StatefulWidget {

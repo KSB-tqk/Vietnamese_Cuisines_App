@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_test/components/constants.dart';
-import 'package:flutter_app_test/screens/login/authentication/authentication.dart';
+import 'package:flutter_app_test/notifier/authentication.dart';
 import 'package:provider/provider.dart';
 
 class LoginDetail extends StatefulWidget {
@@ -142,24 +142,24 @@ class _LoginDetailState extends State<LoginDetail> {
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
                   );
-                  if (!checkSnackBarShow) {
-                    checkSnackBarShow = true;
-                    await ScaffoldMessenger.of(context)
-                        .showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              '$messege',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            backgroundColor: kPrimaryColor,
-                            duration: const Duration(milliseconds: 3000),
-                          ),
-                        )
-                        .closed;
-                    checkSnackBarShow = false;
-                  }
+                  // if (!checkSnackBarShow) {
+                  //   checkSnackBarShow = true;
+                  //   await ScaffoldMessenger.of(context)
+                  //       .showSnackBar(
+                  //         SnackBar(
+                  //           content: Text(
+                  //             '$messege',
+                  //             style: TextStyle(
+                  //               color: Colors.white,
+                  //             ),
+                  //           ),
+                  //           backgroundColor: kPrimaryColor,
+                  //           duration: const Duration(milliseconds: 2000),
+                  //         ),
+                  //       )
+                  //       .closed;
+                  //   checkSnackBarShow = false;
+                  // }
                 },
                 child: Text(
                   "Đăng nhập",

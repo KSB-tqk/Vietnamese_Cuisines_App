@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
-import 'package:flutter_app_test/notifier/food_notifier.dart';
+import 'package:flutter_app_test/components/food.dart';
+import 'package:flutter_app_test/notifier/authentication.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:like_button/like_button.dart';
 
 class DetailFood extends StatelessWidget {
   static String id = 'DetailFood';
@@ -10,7 +12,7 @@ class DetailFood extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FoodNotifier foodNotifier = Provider.of<FoodNotifier>(context);
+    final Food food = (ModalRoute.of(context).settings.arguments as List)[0];
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kPrimaryColor,
@@ -19,7 +21,7 @@ class DetailFood extends StatelessWidget {
         backgroundColor: kPrimaryColor,
         elevation: 0,
         title: Text(
-          foodNotifier.currentFood.name,
+          food.name,
           style: TextStyle(
             fontStyle: FontStyle.italic,
             fontSize: 30,
@@ -36,99 +38,141 @@ class DetailFood extends StatelessWidget {
           },
         ),
       ),
-      body: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: size.height * 0.2),
-            padding: EdgeInsets.only(top: size.height * 0.2),
-            height: size.height * 0.8,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(35),
-                topRight: Radius.circular(35),
+      body: SingleChildScrollView(
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: size.height * 0.2),
+              padding: EdgeInsets.only(top: size.height * 0.2),
+              height: size.height * 0.8,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(35),
+                  topRight: Radius.circular(35),
+                ),
               ),
-            ),
-            child: SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-              child: SafeArea(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                child: SafeArea(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: kPrimaryColor,
+                          ),
+                          SizedBox(
+                            width: size.width * 0.01,
+                          ),
+                          Text(
+                            food.location,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SmoothStarRating(
+                            borderColor: Colors.black12,
+                            color: Colors.yellow,
+                            rating: 5,
+                            isReadOnly: true,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 20),
+                            child: LikeButton(
+                              isLiked: Provider.of<AuthenticationService>(
+                                context,
+                              ).favoriteFood.listIdFood.contains(food.idFood),
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  Icons.favorite,
+                                  color:
+                                      isLiked ? Colors.red[600] : Colors.grey,
+                                );
+                              },
+                              onTap: (bool) =>
+                                  onClickFavorFood(bool, context, food.idFood),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: size.height * 0.02,
+                      ),
+                      Text(
+                        "Giới thiệu món ăn",
+                        style: TextStyle(
                           color: kPrimaryColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          foodNotifier.currentFood.location,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          food.describe,
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
+                            fontSize: 15,
                           ),
                         ),
-                      ],
-                    ),
-                    SmoothStarRating(
-                      borderColor: Colors.black12,
-                      color: Colors.yellow,
-                      rating: 5,
-                      isReadOnly: true,
-                    ),
-                    SizedBox(
-                      height: size.height * 0.02,
-                    ),
-                    Text(
-                      "Giới thiệu món ăn",
-                      style: TextStyle(
-                        color: kPrimaryColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
                       ),
-                    ),
-                    Text(
-                      foodNotifier.currentFood.describe,
-                      style: TextStyle(
-                        fontSize: 15,
+                      SizedBox(
+                        height: size.height * 0.03,
                       ),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.03,
-                    ),
-                    Text(
-                      "Nguyên liệu",
-                      style: TextStyle(
-                        color: kPrimaryColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        "Nguyên liệu",
+                        style: TextStyle(
+                          color: kPrimaryColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      foodNotifier.currentFood.ingredients,
-                      style: TextStyle(
-                        fontSize: 15,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          food.ingredients.replaceAll(". ", '\n'),
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Hero(
-            tag: foodNotifier.currentFood.idFood,
-            child: Image.network(
-              foodNotifier.currentFood.image,
-              // height: size.height * 0.4,
-              fit: BoxFit.fitHeight,
+            Hero(
+              tag: food.idFood,
+              child: Image.network(
+                food.image,
+                // height: size.height * 0.4,
+                fit: BoxFit.fitHeight,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  // Thêm món ăn yêu thích
+  Future<bool> onClickFavorFood(
+      bool isLove, BuildContext context, String idFood) async {
+    final favFood = Provider.of<AuthenticationService>(context, listen: false);
+    if (!isLove) {
+      favFood.updateFavorite(idFood);
+    } else {
+      favFood.deleteFavorite(idFood);
+    }
+    return !isLove;
   }
 }

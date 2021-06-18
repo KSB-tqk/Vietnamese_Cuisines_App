@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
+import 'package:flutter_app_test/screens/home_screens/three_side_food/detail_north_food.dart';
 import 'package:flutter_app_test/screens/home_screens/three_side_food/food_three_side_card.dart';
 
 class TopDeliciousThreeSide extends StatelessWidget {
@@ -51,7 +52,9 @@ class TopDeliciousThreeSide extends StatelessWidget {
                 nameSide: "Ẩm thực miền Bắc",
                 imageSide: "assets/images/top_mien_bac.png",
                 numberOfFood: 10,
-                press: () {},
+                press: () {
+                  Navigator.pushNamed(context, TopNorthFood.id);
+                },
               ),
               FoodThreeSideCard(
                 nameSide: "Ẩm thực miền Trung",

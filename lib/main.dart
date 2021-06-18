@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/notifier/food_notifier.dart';
@@ -7,12 +8,14 @@ import 'package:flutter_app_test/screens/favorite_screen/favorite_screen.dart';
 import 'package:flutter_app_test/screens/home_screens/components_homescreen/detail_food_screen.dart';
 import 'package:flutter_app_test/screens/home_screens/components_homescreen/home_main_screen.dart';
 import 'package:flutter_app_test/screens/home_screens/home_screen.dart';
+import 'package:flutter_app_test/screens/home_screens/three_side_food/detail_north_food.dart';
 import 'package:flutter_app_test/screens/home_screens/top10food/details_top_ten_foods.dart';
-import 'package:flutter_app_test/screens/login/authentication/authentication.dart';
+import 'package:flutter_app_test/notifier/authentication.dart';
 import 'package:flutter_app_test/screens/login/screens/login.dart';
 import 'package:flutter_app_test/screens/search_screen/search_screen.dart';
 import 'package:flutter_app_test/screens/splash/splash_screen.dart';
 import 'package:flutter_app_test/screens/user_screen/user_screen.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -49,6 +52,8 @@ class MyApp extends StatelessWidget {
           DetailsTopFood.id: (context) =>
               DetailsTopFood(), // details top 10 food
           DetailFood.id: (context) => DetailFood(),
+          TopNorthFood.id: (context) =>
+              TopNorthFood(), // details top north food
         },
         initialRoute: SplashScreen.id,
       ),
@@ -68,10 +73,28 @@ class AuthenticationWrapper extends StatelessWidget {
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return Center(
-              // Chờ đăng nhập
-              child: Container(
-                child: Text('Loading'),
+            return Scaffold(
+              body: Center(
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SpinKitCircle(
+                        itemBuilder: (context, index) => DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'Chờ xíu nhá!'
+                      ),
+                    ],
+                  ),
+                ),
               ),
             );
             break;
@@ -79,7 +102,47 @@ class AuthenticationWrapper extends StatelessWidget {
             if (!snapshot.hasData)
               return LoginScreen();
             else {
-              return HomeScreen();
+              catchAuth.setUpUserFirestore();
+              return FutureBuilder(
+                future: catchAuth.setUpUserFirestore(),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.done:
+                      return HomeScreen();
+                      break;
+                    default:
+                      return Scaffold(
+                        body: Center(
+                          child: Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SpinKitCircle(
+                                  itemBuilder: (context, index) => DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: kPrimaryColor,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                    'Chờ xíu nhá!',
+                                  style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                  }
+                },
+              );
             }
         }
       },

@@ -3,13 +3,18 @@ import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/food.dart';
+import 'package:flutter_app_test/components/northfood.dart';
 import 'package:flutter_app_test/components/topfood.dart';
 
 class FoodNotifier with ChangeNotifier {
   List<Food> _foodList = []; // danh sach food
-  List<Food> topFoodList = [];
   Food _currentFood;
+  //top food
   TopFood topFood;
+  List<Food> topFoodList = [];
+  //north food
+  NorthFood northFood;
+  List<Food> northFoodList = [];
 
   UnmodifiableListView<Food> get foodList => UnmodifiableListView(_foodList);
 
@@ -44,6 +49,7 @@ class FoodNotifier with ChangeNotifier {
     foodNotifier.foodList = _foodList;
 
     getTopFood(foodNotifier);
+    getNorthFood(foodNotifier);
     notifyListeners();
   }
 
@@ -60,6 +66,19 @@ class FoodNotifier with ChangeNotifier {
 
     topFood = TopFood.fromJson(snapshot.data());
     topFoodList = topFood.listTopFood
+        .map((e) =>
+            _foodList.firstWhere((element) => element.idFood == e.toString()))
+        .toList();
+  }
+
+  getNorthFood(FoodNotifier topNorthFoodNotifer) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection('Food')
+        .doc('NorthFood')
+        .get();
+
+    northFood = NorthFood.fromJson(snapshot.data());
+    northFoodList = northFood.listNorthFood
         .map((e) =>
             _foodList.firstWhere((element) => element.idFood == e.toString()))
         .toList();

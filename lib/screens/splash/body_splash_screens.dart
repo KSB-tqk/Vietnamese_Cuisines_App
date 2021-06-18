@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/main.dart';
-import 'package:flutter_app_test/screens/login/screens/login.dart';
 
 class Body extends StatefulWidget {
   const Body({key}) : super(key: key);
@@ -19,11 +18,11 @@ class _BodyState extends State<Body> {
     },
     {
       "textSplash": "Tinh hoa ẩm thực Việt Nam - Món ngon nước Việt",
-      "imageSplash": "assets/images/splash_screen_1.png",
+      "imageSplash": "assets/images/splash_screen_2.png",
     },
     {
       "textSplash": "Mang ẩm thực Việt Nam đến mọi người!",
-      "imageSplash": "assets/images/splash_screen_1.png",
+      "imageSplash": "assets/images/splash_screen_3.png",
     },
   ];
   @override
