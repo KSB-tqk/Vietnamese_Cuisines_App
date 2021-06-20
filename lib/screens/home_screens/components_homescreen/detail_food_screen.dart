@@ -13,6 +13,8 @@ class DetailFood extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Food food = (ModalRoute.of(context).settings.arguments as List)[0];
+    final authentication = Provider.of<AuthenticationService>(context);
+    //authentication.favoriteFood.listIdFood
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kPrimaryColor,
@@ -89,9 +91,14 @@ class DetailFood extends StatelessWidget {
                           Container(
                             margin: EdgeInsets.only(right: 20),
                             child: LikeButton(
-                              isLiked: Provider.of<AuthenticationService>(
-                                context,
-                              ).favoriteFood.listIdFood.contains(food.idFood),
+                              isLiked: authentication.favoriteFood.listIdFood
+                                  .contains(food.idFood),
+                              circleColor: CircleColor(
+                                  start: Colors.red[300], end: Colors.red[600]),
+                              bubblesColor: BubblesColor(
+                                dotPrimaryColor: Colors.red[400],
+                                dotSecondaryColor: Colors.red[400],
+                              ),
                               likeBuilder: (bool isLiked) {
                                 return Icon(
                                   Icons.favorite,
@@ -164,15 +171,18 @@ class DetailFood extends StatelessWidget {
     );
   }
 
-  // Thêm món ăn yêu thích
+  // Thêm/xóa món ăn yêu thích
   Future<bool> onClickFavorFood(
-      bool isLove, BuildContext context, String idFood) async {
-    final favFood = Provider.of<AuthenticationService>(context, listen: false);
-    if (!isLove) {
-      favFood.updateFavorite(idFood);
+      bool isLike, BuildContext context, String idFood) async {
+    final authentication =
+        Provider.of<AuthenticationService>(context, listen: false);
+    if (!isLike) {
+      authentication.favoriteFood.listIdFood.add(idFood);
     } else {
-      favFood.deleteFavorite(idFood);
+      authentication.favoriteFood.listIdFood
+          .removeWhere((element) => element == idFood);
     }
-    return !isLove;
+    await authentication.updateFavoriteFood();
+    return !isLike;
   }
 }

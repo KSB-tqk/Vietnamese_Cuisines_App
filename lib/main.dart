@@ -6,9 +6,10 @@ import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/notifier/food_notifier.dart';
 import 'package:flutter_app_test/screens/favorite_screen/favorite_screen.dart';
 import 'package:flutter_app_test/screens/home_screens/components_homescreen/detail_food_screen.dart';
-import 'package:flutter_app_test/screens/home_screens/components_homescreen/home_main_screen.dart';
-import 'package:flutter_app_test/screens/home_screens/home_screen.dart';
-import 'package:flutter_app_test/screens/home_screens/three_side_food/detail_north_food.dart';
+import 'package:flutter_app_test/screens/home_screens/screens/home_main_screen.dart';
+import 'package:flutter_app_test/screens/home_screens/screens/home_screen.dart';
+import 'package:flutter_app_test/screens/home_screens/three_side_food/details_three_side_food/detail_middle_food.dart';
+import 'package:flutter_app_test/screens/home_screens/three_side_food/details_three_side_food/detail_north_food.dart';
 import 'package:flutter_app_test/screens/home_screens/top10food/details_top_ten_foods.dart';
 import 'package:flutter_app_test/notifier/authentication.dart';
 import 'package:flutter_app_test/screens/login/screens/login.dart';
@@ -54,6 +55,8 @@ class MyApp extends StatelessWidget {
           DetailFood.id: (context) => DetailFood(),
           TopNorthFood.id: (context) =>
               TopNorthFood(), // details top north food
+          TopMiddleFood.id: (context) =>
+              TopMiddleFood(), // details top middle food
         },
         initialRoute: SplashScreen.id,
       ),
@@ -89,9 +92,7 @@ class AuthenticationWrapper extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      Text(
-                        'Chờ xíu nhá!'
-                      ),
+                      Text('Chờ tí nha!'),
                     ],
                   ),
                 ),
@@ -102,7 +103,6 @@ class AuthenticationWrapper extends StatelessWidget {
             if (!snapshot.hasData)
               return LoginScreen();
             else {
-              catchAuth.setUpUserFirestore();
               return FutureBuilder(
                 future: catchAuth.setUpUserFirestore(),
                 builder: (context, snapshot) {
@@ -128,7 +128,7 @@ class AuthenticationWrapper extends StatelessWidget {
                                   height: 20,
                                 ),
                                 Text(
-                                    'Chờ xíu nhá!',
+                                  'Đợi tí nha!',
                                   style: TextStyle(
                                     color: kPrimaryColor,
                                     fontSize: 20,

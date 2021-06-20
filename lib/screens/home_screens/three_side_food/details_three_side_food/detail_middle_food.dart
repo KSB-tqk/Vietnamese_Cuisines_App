@@ -4,18 +4,14 @@ import 'package:flutter_app_test/notifier/food_notifier.dart';
 import 'package:flutter_app_test/screens/home_screens/components_homescreen/food_item.dart';
 import 'package:provider/provider.dart';
 
-class DetailsTopFood extends StatefulWidget {
-  static String id = 'DetailsTopFood';
-  const DetailsTopFood({key}) : super(key: key);
+class TopMiddleFood extends StatelessWidget {
+  static String id = 'MiddleFood';
+  const TopMiddleFood({key}) : super(key: key);
 
-  @override
-  _DetailsTopFoodState createState() => _DetailsTopFoodState();
-}
-
-class _DetailsTopFoodState extends State<DetailsTopFood> {
   @override
   Widget build(BuildContext context) {
-    FoodNotifier topFoodNotifier = Provider.of<FoodNotifier>(context);
+    FoodNotifier topMiddleFoodNotifier = Provider.of<FoodNotifier>(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -30,7 +26,7 @@ class _DetailsTopFoodState extends State<DetailsTopFood> {
         backgroundColor: kPrimaryColor,
         centerTitle: true,
         title: Text(
-          'Top 10 món ăn Việt Nam!',
+          'Ẩm thực miền Bắc!',
           style: TextStyle(
             color: Colors.white,
             fontStyle: FontStyle.italic,
@@ -40,10 +36,12 @@ class _DetailsTopFoodState extends State<DetailsTopFood> {
       body: Padding(
         padding: EdgeInsets.only(top: 5, left: 10, right: 10),
         child: ListView.builder(
-          itemCount: topFoodNotifier.topFoodList.length,
+          itemCount: topMiddleFoodNotifier.middleFoodList.length,
           itemBuilder: (BuildContext context, int index) {
-            final i = topFoodNotifier.topFoodList[index];
-            return FoodItem(food: i);
+            final i = topMiddleFoodNotifier.middleFoodList[index];
+            return FoodItem(
+              food: i,
+            );
           },
         ),
       ),

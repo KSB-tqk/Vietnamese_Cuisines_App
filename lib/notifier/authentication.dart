@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app_test/components/favorite.dart';
+import 'package:flutter_app_test/components/food.dart';
 import 'package:flutter_app_test/components/user.dart';
 
 class AuthenticationService with ChangeNotifier {
@@ -15,7 +16,6 @@ class AuthenticationService with ChangeNotifier {
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
-
   }
 
   Future<String> signIn({String email, String password}) async {
@@ -43,14 +43,12 @@ class AuthenticationService with ChangeNotifier {
     }
   }
 
-  Future<String> signUp(
-      {String email, String password, String username}) async {
+  Future<String> signUp({String email, String password}) async {
     String err = "Đăng ký không thành công!";
     try {
       await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => print("Lay data"));
-      await _firebaseAuth.currentUser.updateDisplayName(username);
       return "Đăng ký thành công!";
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
@@ -105,12 +103,15 @@ class AuthenticationService with ChangeNotifier {
       favoriteFood = FavoriteFood.fromJson(snapshot.data());
     } else {
       favoriteFood = FavoriteFood(idUser: userFood.idUser, listIdFood: []);
+      await _firestore
+          .collection('Favorite')
+          .doc(userFood.idUser)
+          .set(favoriteFood.toJson());
     }
   }
 
-  // Thêm món ăn yêu thích vào list của User
-  Future updateFavorite(String idFood) async {
-    favoriteFood.listIdFood.add(idFood);
+  // Cập nhật danh sách food yêu thích
+  Future updateFavoriteFood() async {
     notifyListeners();
     await _firestore
         .collection('Favorite')
@@ -118,14 +119,18 @@ class AuthenticationService with ChangeNotifier {
         .set(favoriteFood.toJson());
   }
 
-  // Xóa món ăn yêu thích khỏi list của User
-  Future deleteFavorite(String idFood) async {
-    favoriteFood.listIdFood.removeWhere((food)=> food==idFood);
-    notifyListeners();
-    await _firestore
-        .collection('Favorite')
-        .doc(_firebaseAuth.currentUser.uid)
-        .set(favoriteFood.toJson());
+  Future<List<Food>> getListFoodFavorite() async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection('Food')
+        .doc('Foods')
+        .collection('FoodInfo')
+        .where("idFood", whereIn: favoriteFood.listIdFood)
+        .get();
 
+    List<Food> foodFavorite = [];
+    snapshot.docs.forEach((element) {
+      foodFavorite.add(Food.fromJson(element.data()));
+    });
+    return foodFavorite;
   }
 }

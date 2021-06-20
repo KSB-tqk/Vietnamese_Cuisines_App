@@ -142,24 +142,24 @@ class _LoginDetailState extends State<LoginDetail> {
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
                   );
-                  // if (!checkSnackBarShow) {
-                  //   checkSnackBarShow = true;
-                  //   await ScaffoldMessenger.of(context)
-                  //       .showSnackBar(
-                  //         SnackBar(
-                  //           content: Text(
-                  //             '$messege',
-                  //             style: TextStyle(
-                  //               color: Colors.white,
-                  //             ),
-                  //           ),
-                  //           backgroundColor: kPrimaryColor,
-                  //           duration: const Duration(milliseconds: 2000),
-                  //         ),
-                  //       )
-                  //       .closed;
-                  //   checkSnackBarShow = false;
-                  // }
+                  if (!checkSnackBarShow) {
+                    checkSnackBarShow = true;
+                    await ScaffoldMessenger.of(context)
+                        .showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              '$messege',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            backgroundColor: kPrimaryColor,
+                            duration: const Duration(milliseconds: 2000),
+                          ),
+                        )
+                        .closed;
+                    checkSnackBarShow = false;
+                  }
                 },
                 child: Text(
                   "Đăng nhập",

@@ -1,8 +1,8 @@
 import 'dart:collection';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/food.dart';
+import 'package:flutter_app_test/components/middlefood.dart';
 import 'package:flutter_app_test/components/northfood.dart';
 import 'package:flutter_app_test/components/topfood.dart';
 
@@ -15,6 +15,9 @@ class FoodNotifier with ChangeNotifier {
   //north food
   NorthFood northFood;
   List<Food> northFoodList = [];
+  //middle food
+  MiddleFood middleFood;
+  List<Food> middleFoodList = [];
 
   UnmodifiableListView<Food> get foodList => UnmodifiableListView(_foodList);
 
@@ -48,8 +51,10 @@ class FoodNotifier with ChangeNotifier {
     _foodList = foodList;
     foodNotifier.foodList = _foodList;
 
+    // load toàn bộ data food có trên firebase xuống
     getTopFood(foodNotifier);
     getNorthFood(foodNotifier);
+    getMiddleFood(foodNotifier);
     notifyListeners();
   }
 
@@ -71,6 +76,7 @@ class FoodNotifier with ChangeNotifier {
         .toList();
   }
 
+  // Lấy danh sách các món ăn miền Bắc
   getNorthFood(FoodNotifier topNorthFoodNotifer) async {
     var snapshot = await FirebaseFirestore.instance
         .collection('Food')
@@ -79,6 +85,20 @@ class FoodNotifier with ChangeNotifier {
 
     northFood = NorthFood.fromJson(snapshot.data());
     northFoodList = northFood.listNorthFood
+        .map((e) =>
+            _foodList.firstWhere((element) => element.idFood == e.toString()))
+        .toList();
+  }
+
+// Lấy danh sách các món ăn miền Nam
+  getMiddleFood(FoodNotifier topMiddleFoodNotifer) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection('Food')
+        .doc('MiddleFood')
+        .get();
+
+    middleFood = MiddleFood.fromJson(snapshot.data());
+    middleFoodList = middleFood.listMiddleFood
         .map((e) =>
             _foodList.firstWhere((element) => element.idFood == e.toString()))
         .toList();

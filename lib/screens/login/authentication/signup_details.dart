@@ -13,14 +13,14 @@ class SignUpDetail extends StatefulWidget {
 class _SignUpDetailState extends State<SignUpDetail> {
   TextEditingController emailController;
   TextEditingController passwordController;
-  TextEditingController userNameController;
+  TextEditingController confirmPassController;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     emailController = TextEditingController();
     passwordController = TextEditingController();
-    userNameController = TextEditingController();
+    confirmPassController = TextEditingController();
     super.initState();
   }
 
@@ -28,7 +28,6 @@ class _SignUpDetailState extends State<SignUpDetail> {
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<AuthenticationService>(context);
     bool checkSnackBarShow = false;
-
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: Form(
@@ -36,44 +35,6 @@ class _SignUpDetailState extends State<SignUpDetail> {
         child: Column(
           children: [
             SizedBox(height: 10),
-            TextFormField(
-              controller: userNameController,
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              validator: (val) =>
-                  val.isNotEmpty ? null : "Tên người dùng không được để trống!",
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.account_box_rounded,
-                  color: Colors.black38,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black38),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: kPrimaryColor),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black38),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                contentPadding: EdgeInsets.all(10),
-                hintText: "Tên người dùng",
-                hintStyle: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black26,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
             // Nhập tài khoản email
             TextFormField(
               controller: emailController,
@@ -117,6 +78,7 @@ class _SignUpDetailState extends State<SignUpDetail> {
             TextFormField(
               controller: passwordController,
               obscureText: true,
+              textInputAction: TextInputAction.next,
               validator: (val) =>
                   val.length < 6 ? "Mật khẩu phải lớn hơn 6 kí tự!" : null,
               decoration: InputDecoration(
@@ -149,6 +111,46 @@ class _SignUpDetailState extends State<SignUpDetail> {
               ),
             ),
             SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              controller: confirmPassController,
+              keyboardType: TextInputType.text,
+              obscureText: true,
+              textInputAction: TextInputAction.done,
+              validator: (val) => val != passwordController.text
+                  ? "Xác nhận mật khẩu không chính xác!"
+                  : null,
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.account_box_rounded,
+                  color: Colors.black38,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black38),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: kPrimaryColor),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black38),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                contentPadding: EdgeInsets.all(10),
+                hintText: "Xác nhận mật khẩu",
+                hintStyle: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black26,
+                ),
+              ),
+            ),
+            SizedBox(
               height: 30,
             ),
             Container(
@@ -160,26 +162,25 @@ class _SignUpDetailState extends State<SignUpDetail> {
                   final String messege = await loginProvider.signUp(
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
-                    username: userNameController.text.trim(),
                   );
-                  // if (!checkSnackBarShow) {
-                  //   checkSnackBarShow = true;
-                  //   await ScaffoldMessenger.of(context)
-                  //       .showSnackBar(
-                  //         SnackBar(
-                  //           content: Text(
-                  //             '$messege',
-                  //             style: TextStyle(
-                  //               color: Colors.white,
-                  //             ),
-                  //           ),
-                  //           backgroundColor: kPrimaryColor,
-                  //           duration: const Duration(milliseconds: 3000),
-                  //         ),
-                  //       )
-                  //       .closed;
-                  //   checkSnackBarShow = false;
-                  // }
+                  if (!checkSnackBarShow) {
+                    checkSnackBarShow = true;
+                    await ScaffoldMessenger.of(context)
+                        .showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              '$messege',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            backgroundColor: kPrimaryColor,
+                            duration: const Duration(milliseconds: 3000),
+                          ),
+                        )
+                        .closed;
+                    checkSnackBarShow = false;
+                  }
                 },
                 child: Text(
                   "Đăng ký",

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/notifier/food_notifier.dart';
-import 'package:flutter_app_test/screens/home_screens/three_side_food/widgets/food_item.dart';
+import 'package:flutter_app_test/screens/home_screens/components_homescreen/food_item.dart';
 import 'package:provider/provider.dart';
 
 class TopNorthFood extends StatelessWidget {

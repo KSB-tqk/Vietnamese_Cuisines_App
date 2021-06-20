@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/screens/home_screens/top10food/top10food.dart';
-import 'package:flutter_app_test/screens/home_screens/three_side_food/top_delicious_three_side.dart';
+import 'package:flutter_app_test/screens/home_screens/three_side_food/widget/top_delicious_three_side.dart';
 
 class BodyHomeScreen extends StatefulWidget {
   const BodyHomeScreen({key}) : super(key: key);
