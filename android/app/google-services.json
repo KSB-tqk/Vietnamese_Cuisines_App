@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "893004170121",
+    "project_id": "vietnamese-cuisines",
+    "storage_bucket": "vietnamese-cuisines.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:893004170121:android:9eb2072fccb684443ad758",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "893004170121-lgd2lo4pn83pgt8dfvfvufd5jrd2l5q9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_app_test",
+            "certificate_hash": "ff977852494d8a83158af37b73a380f12a51f054"
+          }
+        },
+        {
+          "client_id": "893004170121-oiubh5to5fvdu5l5dich5ssutgtkkqa8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhQgjQjfpuo_ZpeMNYZeaapLijDsI9Nmc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "893004170121-oiubh5to5fvdu5l5dich5ssutgtkkqa8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:893004170121:android:a490e7bdd51c8cf83ad758",
+        "android_client_info": {
+          "package_name": "com.example.vietnamese_cuisine_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "893004170121-oiubh5to5fvdu5l5dich5ssutgtkkqa8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhQgjQjfpuo_ZpeMNYZeaapLijDsI9Nmc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "893004170121-oiubh5to5fvdu5l5dich5ssutgtkkqa8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
-import 'package:flutter_app_test/screens/login/screens/login.dart';
+import 'package:flutter_app_test/main.dart';
 
 class Body extends StatefulWidget {
   const Body({key}) : super(key: key);
@@ -18,82 +18,87 @@ class _BodyState extends State<Body> {
     },
     {
       "textSplash": "Tinh hoa ẩm thực Việt Nam - Món ngon nước Việt",
-      "imageSplash": "assets/images/splash_screen_1.png",
+      "imageSplash": "assets/images/splash_screen_2.png",
     },
     {
       "textSplash": "Mang ẩm thực Việt Nam đến mọi người!",
-      "imageSplash": "assets/images/splash_screen_1.png",
+      "imageSplash": "assets/images/splash_screen_3.png",
     },
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kPrimaryColor,
-      body: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 3,
-                  child: PageView.builder(
-                    onPageChanged: (value) {
-                      setState(() {
-                        currentPage = value;
-                      });
-                    },
-                    itemCount: splashData.length,
-                    itemBuilder: (context, index) => SplashContent(
-                      imageSplash: splashData[index]["imageSplash"],
-                      textSplash: splashData[index]["textSplash"],
+    final Size size = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+      child: Container(
+        color: kPrimaryColor,
+        height: size.height,
+        child: SafeArea(
+          child: SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    flex: 3,
+                    child: PageView.builder(
+                      onPageChanged: (value) {
+                        setState(() {
+                          currentPage = value;
+                        });
+                      },
+                      itemCount: splashData.length,
+                      itemBuilder: (context, index) => SplashContent(
+                        imageSplash: splashData[index]["imageSplash"],
+                        textSplash: splashData[index]["textSplash"],
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: <Widget>[
-                        Spacer(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(
-                            splashData.length,
-                            (index) => buildDot(index: index),
-                          ),
-                        ),
-                        Spacer(flex: 3),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 56,
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, LoginScreen.id);
-                            },
-                            child: Text(
-                              "Bắt đầu nào!",
-                              style: TextStyle(
-                                color: kPrimaryColor,
-                                fontSize: 20,
-                              ),
-                            ),
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        children: <Widget>[
+                          Spacer(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              splashData.length,
+                              (index) => buildDot(index: index),
                             ),
                           ),
-                        ),
-                        Spacer(),
-                      ],
+                          Spacer(flex: 3),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 56,
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, AuthenticationWrapper.id);
+                              },
+                              child: Text(
+                                "Bắt đầu nào!",
+                                style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              style: TextButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
