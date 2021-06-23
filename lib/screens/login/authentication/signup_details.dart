@@ -123,7 +123,7 @@ class _SignUpDetailState extends State<SignUpDetail> {
                   : null,
               decoration: InputDecoration(
                 prefixIcon: Icon(
-                  Icons.account_box_rounded,
+                  Icons.check_circle,
                   color: Colors.black38,
                 ),
                 enabledBorder: OutlineInputBorder(
@@ -158,28 +158,29 @@ class _SignUpDetailState extends State<SignUpDetail> {
               height: 50,
               child: OutlinedButton(
                 onPressed: () async {
-                  if (_formKey.currentState.validate()) {}
-                  final String messege = await loginProvider.signUp(
-                    email: emailController.text.trim(),
-                    password: passwordController.text.trim(),
-                  );
-                  if (!checkSnackBarShow) {
-                    checkSnackBarShow = true;
-                    await ScaffoldMessenger.of(context)
-                        .showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              '$messege',
-                              style: TextStyle(
-                                color: Colors.white,
+                  if (_formKey.currentState.validate()) {
+                    final String messege = await loginProvider.signUp(
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim(),
+                    );
+                    if (!checkSnackBarShow) {
+                      checkSnackBarShow = true;
+                      await ScaffoldMessenger.of(context)
+                          .showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                '$messege',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
+                              backgroundColor: kPrimaryColor,
+                              duration: const Duration(milliseconds: 3000),
                             ),
-                            backgroundColor: kPrimaryColor,
-                            duration: const Duration(milliseconds: 3000),
-                          ),
-                        )
-                        .closed;
-                    checkSnackBarShow = false;
+                          )
+                          .closed;
+                      checkSnackBarShow = false;
+                    }
                   }
                 },
                 child: Text(

@@ -2,10 +2,7 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/notifier/food_notifier.dart';
-import 'package:flutter_app_test/screens/favorite_screen/favorite_screen.dart';
-import 'package:flutter_app_test/screens/home_screens/screens/home_main_screen.dart';
-import 'package:flutter_app_test/screens/search_screen/search_screen.dart';
-import 'package:flutter_app_test/screens/user_screen/user_screen.dart';
+import 'package:flutter_app_test/notifier/home_screen_notifier.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,19 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.didChangeDependencies();
   }
 
-  int currentIndex = 0;
-
-  //list Page
-  List listOfPage = [
-    HomeMainScreen(),
-    SearchScreen(),
-    FavoriteScreen(),
-    UserScreen(),
-  ];
   @override
   Widget build(BuildContext context) {
+    HomeScreenProvider homeScreenProvider =
+        Provider.of<HomeScreenProvider>(context);
     return Scaffold(
-      body: listOfPage[currentIndex],
+      body: homeScreenProvider.listOfPage[homeScreenProvider.currentIndex],
       bottomNavigationBar: Container(
         color: Colors.transparent,
         margin: EdgeInsets.only(
@@ -51,18 +41,16 @@ class _HomeScreenState extends State<HomeScreen> {
           child: BottomNavyBar(
             curve: Curves.decelerate,
             backgroundColor: kPrimaryColor,
-            selectedIndex: currentIndex,
+            selectedIndex: homeScreenProvider.currentIndex,
             onItemSelected: (index) {
-              setState(() {
-                currentIndex = index;
-              });
+              homeScreenProvider.setPage = (index);
             },
             items: <BottomNavyBarItem>[
               BottomNavyBarItem(
                 icon: Icon(Icons.home),
                 title: Center(
                   child: Text(
-                    'Home',
+                    'Trang chủ',
                     style: TextStyle(
                       fontSize: 16,
                     ),
@@ -75,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icon(Icons.search),
                 title: Center(
                   child: Text(
-                    'Search',
+                    'Tìm kiếm',
                     style: TextStyle(
                       fontSize: 16,
                     ),
@@ -88,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icon(Icons.favorite),
                 title: Center(
                   child: Text(
-                    'Favorite',
+                    'Yêu thích',
                     style: TextStyle(
                       fontSize: 16,
                     ),
@@ -101,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icon(Icons.account_circle),
                 title: Center(
                   child: Text(
-                    'User',
+                    'Tài khoản',
                     style: TextStyle(
                       fontSize: 16,
                     ),

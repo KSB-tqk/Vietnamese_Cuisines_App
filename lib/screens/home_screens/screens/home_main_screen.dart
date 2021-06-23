@@ -35,9 +35,8 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
                 .copyWith(fontWeight: FontWeight.bold),
             children: [
               TextSpan(
-                  text: "Vietnames",
-                  style: TextStyle(color: Color(0xFFFE842D))),
-              TextSpan(text: "Cuisines", style: TextStyle(color: Colors.grey)),
+                  text: "Ẩm Thực ", style: TextStyle(color: Color(0xFFFE842D))),
+              TextSpan(text: "Việt Nam", style: TextStyle(color: Colors.grey)),
             ],
           ),
         ),

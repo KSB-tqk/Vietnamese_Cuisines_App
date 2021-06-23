@@ -133,4 +133,13 @@ class AuthenticationService with ChangeNotifier {
     });
     return foodFavorite;
   }
+
+  // update username
+  Future updateUser() async {
+    await _firestore
+        .collection('Users')
+        .doc(_firebaseAuth.currentUser.uid)
+        .set(userFood.toJson());
+    notifyListeners();
+  }
 }

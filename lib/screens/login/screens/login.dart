@@ -56,7 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             children: [
                               TextSpan(
-                                text: isSignUpScreen ? " to AppName" : " Back",
+                                text: isSignUpScreen
+                                    ? " to Vie Cooking"
+                                    : " Back",
                                 style: TextStyle(
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
