@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 class Food {
   String idFood;
   String name;
@@ -5,6 +7,7 @@ class Food {
   String location;
   String describe;
   String ingredients;
+  double rating;
 
   Food(
       {this.idFood,
@@ -12,7 +15,8 @@ class Food {
       this.image,
       this.location,
       this.describe,
-      this.ingredients});
+      this.ingredients,
+      this.rating});
 
   Food.fromJson(Map<String, dynamic> json) {
     idFood = json['idFood'];
@@ -21,6 +25,7 @@ class Food {
     location = json['location'];
     describe = json['describe'];
     ingredients = json['ingredients'];
+    rating = json['rating'] * (1.0);
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +36,7 @@ class Food {
     data['location'] = this.location;
     data['describe'] = this.describe;
     data['ingredients'] = this.ingredients;
+    data['rating'] = this.rating;
     return data;
   }
 }

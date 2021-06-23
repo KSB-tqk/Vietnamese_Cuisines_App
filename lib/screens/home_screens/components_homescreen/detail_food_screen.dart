@@ -85,11 +85,11 @@ class DetailFood extends StatelessWidget {
                           SmoothStarRating(
                             borderColor: Colors.black12,
                             color: Colors.yellow,
-                            rating: 5,
+                            rating: food.rating,
                             isReadOnly: true,
                           ),
                           Container(
-                            margin: EdgeInsets.only(right: 20),
+                            margin: EdgeInsets.only(right: 25),
                             child: LikeButton(
                               isLiked: authentication.favoriteFood.listIdFood
                                   .contains(food.idFood),
@@ -104,6 +104,7 @@ class DetailFood extends StatelessWidget {
                                   Icons.favorite,
                                   color:
                                       isLiked ? Colors.red[600] : Colors.grey,
+                                  size: 35,
                                 );
                               },
                               onTap: (bool) =>

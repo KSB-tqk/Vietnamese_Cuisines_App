@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/food.dart';
 import 'package:flutter_app_test/components/middlefood.dart';
 import 'package:flutter_app_test/components/northfood.dart';
+import 'package:flutter_app_test/components/southfood.dart';
 import 'package:flutter_app_test/components/topfood.dart';
 
 class FoodNotifier with ChangeNotifier {
@@ -18,6 +19,11 @@ class FoodNotifier with ChangeNotifier {
   //middle food
   MiddleFood middleFood;
   List<Food> middleFoodList = [];
+  //south food
+  SouthFood southFood;
+  List<Food> southFoodList = [];
+
+  //find food
   List<Food> findFoodList = [];
 
   UnmodifiableListView<Food> get foodList => UnmodifiableListView(_foodList);
@@ -52,9 +58,10 @@ class FoodNotifier with ChangeNotifier {
     this.foodList = foodList;
     findFoodList = foodList;
     // load toàn bộ data food có trên firebase xuống
-    getTopFood(foodNotifier);
-    getNorthFood(foodNotifier);
-    getMiddleFood(foodNotifier);
+    await getTopFood(foodNotifier);
+    await getNorthFood(foodNotifier);
+    await getMiddleFood(foodNotifier);
+    await getSouthFood(foodNotifier);
     notifyListeners();
   }
 
@@ -90,7 +97,7 @@ class FoodNotifier with ChangeNotifier {
         .toList();
   }
 
-// Lấy danh sách các món ăn miền Nam
+  // Lấy danh sách các món ăn miền Trung
   getMiddleFood(FoodNotifier topMiddleFoodNotifer) async {
     var snapshot = await FirebaseFirestore.instance
         .collection('Food')
@@ -104,9 +111,23 @@ class FoodNotifier with ChangeNotifier {
         .toList();
   }
 
+  // Lấy danh sách các món miền Nam
+  getSouthFood(FoodNotifier topSouthFoodNotifer) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection('Food')
+        .doc('SouthFood')
+        .get();
+    southFood = SouthFood.fromJson(snapshot.data());
+    southFoodList = southFood.listSouthFood
+        .map((e) =>
+            _foodList.firstWhere((element) => element.idFood == e.toString()))
+        .toList();
+  }
+
   //Tìm danh sách món ăn
   searchForFood(String query) {
-    findFoodList = _foodList.where((element) => element.name.contains(query)).toList();
+    findFoodList =
+        _foodList.where((element) => element.name.contains(query)).toList();
     notifyListeners();
   }
 }

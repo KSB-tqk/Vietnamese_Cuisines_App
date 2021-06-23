@@ -13,15 +13,18 @@ class _BodyState extends State<Body> {
   int currentPage = 0;
   List<Map<String, String>> splashData = [
     {
+      "textTitle": "Ẩm thực Việt Nam",
       "textSplash": "Chào mừng đến với ẩm thực Việt Nam!",
       "imageSplash": "assets/images/splash_screen_1.png",
     },
     {
-      "textSplash": "Tinh hoa ẩm thực Việt Nam - Món ngon nước Việt",
+      "textTitle": "Tinh hoa ẩm thực Việt",
+      "textSplash": "Các công thức chế biến món ngon",
       "imageSplash": "assets/images/splash_screen_2.png",
     },
     {
-      "textSplash": "Mang ẩm thực Việt Nam đến mọi người!",
+      "textSplash": "Mang ẩm thực Việt đến bếp nhà bạn",
+      "textTitle": "Món ngon của bạn",
       "imageSplash": "assets/images/splash_screen_3.png",
     },
   ];
@@ -51,6 +54,7 @@ class _BodyState extends State<Body> {
                       itemBuilder: (context, index) => SplashContent(
                         imageSplash: splashData[index]["imageSplash"],
                         textSplash: splashData[index]["textSplash"],
+                        textTitle: splashData[index]["textTitle"],
                       ),
                     ),
                   ),
@@ -73,7 +77,7 @@ class _BodyState extends State<Body> {
                             width: double.infinity,
                             height: 56,
                             child: TextButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 Navigator.pushNamed(
                                     context, AuthenticationWrapper.id);
                               },
@@ -125,8 +129,9 @@ class SplashContent extends StatelessWidget {
     Key key,
     this.textSplash,
     this.imageSplash,
+    this.textTitle,
   }) : super(key: key);
-  final String textSplash, imageSplash;
+  final String textSplash, imageSplash, textTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +139,7 @@ class SplashContent extends StatelessWidget {
       children: <Widget>[
         Spacer(),
         Text(
-          "Vietnamese Cuisines",
+          textTitle,
           style: TextStyle(
             color: Colors.white,
             fontSize: 25,

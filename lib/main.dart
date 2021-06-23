@@ -4,12 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/notifier/food_notifier.dart';
+import 'package:flutter_app_test/notifier/home_screen_notifier.dart';
 import 'package:flutter_app_test/screens/favorite_screen/favorite_screen.dart';
 import 'package:flutter_app_test/screens/home_screens/components_homescreen/detail_food_screen.dart';
 import 'package:flutter_app_test/screens/home_screens/screens/home_main_screen.dart';
 import 'package:flutter_app_test/screens/home_screens/screens/home_screen.dart';
 import 'package:flutter_app_test/screens/home_screens/three_side_food/details_three_side_food/detail_middle_food.dart';
 import 'package:flutter_app_test/screens/home_screens/three_side_food/details_three_side_food/detail_north_food.dart';
+import 'package:flutter_app_test/screens/home_screens/three_side_food/details_three_side_food/detail_south_food.dart';
 import 'package:flutter_app_test/screens/home_screens/top10food/details_top_ten_foods.dart';
 import 'package:flutter_app_test/notifier/authentication.dart';
 import 'package:flutter_app_test/screens/login/screens/login.dart';
@@ -36,6 +38,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => FoodNotifier(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => HomeScreenProvider(),
+        )
       ],
       child: MaterialApp(
         title: 'Vietnamese Cuisines App',
@@ -57,6 +62,8 @@ class MyApp extends StatelessWidget {
               TopNorthFood(), // details top north food
           TopMiddleFood.id: (context) =>
               TopMiddleFood(), // details top middle food
+          TopSouthFood.id: (context) =>
+              TopSouthFood(), // details top south food
         },
         initialRoute: SplashScreen.id,
       ),
