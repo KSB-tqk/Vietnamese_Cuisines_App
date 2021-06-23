@@ -44,7 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             controller: searchTEC,
                             style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                                hintText: "Tìm kiếm món ăn theo tên",
+                                hintText: "Tìm kiếm món ăn theo tên.",
                                 hintStyle: TextStyle(color: Colors.white54),
                                 border: InputBorder.none),
                           )),
