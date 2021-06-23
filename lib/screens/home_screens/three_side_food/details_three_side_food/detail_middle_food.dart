@@ -26,7 +26,7 @@ class TopMiddleFood extends StatelessWidget {
         backgroundColor: kPrimaryColor,
         centerTitle: true,
         title: Text(
-          'Ẩm thực miền Bắc!',
+          'Ẩm thực miền Trung!',
           style: TextStyle(
             color: Colors.white,
             fontStyle: FontStyle.italic,

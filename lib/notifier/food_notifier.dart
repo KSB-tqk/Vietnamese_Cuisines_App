@@ -18,6 +18,7 @@ class FoodNotifier with ChangeNotifier {
   //middle food
   MiddleFood middleFood;
   List<Food> middleFoodList = [];
+  List<Food> findFoodList = [];
 
   UnmodifiableListView<Food> get foodList => UnmodifiableListView(_foodList);
 
@@ -48,9 +49,8 @@ class FoodNotifier with ChangeNotifier {
     });
 
     // xóa dữ liệu khi load lại
-    _foodList = foodList;
-    foodNotifier.foodList = _foodList;
-
+    this.foodList = foodList;
+    findFoodList = foodList;
     // load toàn bộ data food có trên firebase xuống
     getTopFood(foodNotifier);
     getNorthFood(foodNotifier);
@@ -102,5 +102,11 @@ class FoodNotifier with ChangeNotifier {
         .map((e) =>
             _foodList.firstWhere((element) => element.idFood == e.toString()))
         .toList();
+  }
+
+  //Tìm danh sách món ăn
+  searchForFood(String query) {
+    findFoodList = _foodList.where((element) => element.name.contains(query)).toList();
+    notifyListeners();
   }
 }
