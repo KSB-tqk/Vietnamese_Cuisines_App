@@ -142,4 +142,8 @@ class AuthenticationService with ChangeNotifier {
         .set(userFood.toJson());
     notifyListeners();
   }
+
+  Future sendResetPassWord(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
 }

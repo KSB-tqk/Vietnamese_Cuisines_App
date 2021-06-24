@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/notifier/authentication.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class LoginDetail extends StatefulWidget {
   const LoginDetail({key}) : super(key: key);
@@ -14,7 +16,10 @@ class LoginDetail extends StatefulWidget {
 class _LoginDetailState extends State<LoginDetail> {
   TextEditingController emailController;
   TextEditingController passwordController;
+  TextEditingController resetPasswordMailController;
   final _formKey = GlobalKey<FormState>();
+  String _email;
+  final auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -109,6 +114,7 @@ class _LoginDetailState extends State<LoginDetail> {
                 ),
               ),
             ),
+
             SizedBox(
               height: 20,
             ),
@@ -175,6 +181,54 @@ class _LoginDetailState extends State<LoginDetail> {
                     backgroundColor: kPrimaryColor),
               ),
             ),
+            SizedBox(height: 20),
+            TextButton(
+                onPressed: () {
+                  Alert(
+                      context: context,
+                      title: "Quên Mật Khẩu",
+                      content: Column(
+                        children: <Widget>[
+                          TextField(
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.mail, color: kPrimaryColor),
+                              labelText: 'Email',
+                              hintText: 'Nhập email bạn đã đăng ký',
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: kPrimaryColor),
+                              ),
+                              focusColor: kPrimaryColor,
+                              fillColor: kPrimaryColor,
+                              hoverColor: kPrimaryColor,
+                            ),
+                            controller: resetPasswordMailController,
+                            onChanged: (value) {
+                              setState(() {
+                                _email = value;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      buttons: [
+                        DialogButton(
+                          onPressed: () {
+                            loginProvider.sendResetPassWord(_email);
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            "Gửi Email Reset Mật Khẩu",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          color: kPrimaryColor,
+                        )
+                      ]).show();
+                },
+                child: Text("Quên Mật Khẩu?"),
+                style: TextButton.styleFrom(primary: Colors.black54))
           ],
         ),
       ),
