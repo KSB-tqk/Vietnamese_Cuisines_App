@@ -83,6 +83,7 @@ class _LoginDetailState extends State<LoginDetail> {
             TextFormField(
               controller: passwordController,
               obscureText: true,
+              inputFormatters: [FilteringTextInputFormatter.deny(new RegExp('[\\.|\\,| -]'))],
               validator: (val) =>
                   val.length < 6 ? "Mật khẩu phải lớn hơn 6 kí tự!" : null,
               decoration: InputDecoration(
@@ -190,6 +191,7 @@ class _LoginDetailState extends State<LoginDetail> {
                       content: Column(
                         children: <Widget>[
                           TextField(
+                            keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               icon: Icon(Icons.mail, color: kPrimaryColor),
                               labelText: 'Email',
