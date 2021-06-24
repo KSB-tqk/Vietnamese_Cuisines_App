@@ -161,5 +161,8 @@ class AuthenticationService with ChangeNotifier {
       print(e);
       return false;
     }
+    
+  Future sendResetPassWord(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 }
