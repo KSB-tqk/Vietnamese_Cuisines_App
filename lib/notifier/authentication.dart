@@ -11,7 +11,6 @@ class AuthenticationService with ChangeNotifier {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   UserFood userFood;
   FavoriteFood favoriteFood;
-
   AuthenticationService(_firebaseAuth);
 
   Stream<User> get authStateChange => _firebaseAuth.authStateChanges();
@@ -100,7 +99,7 @@ class AuthenticationService with ChangeNotifier {
   // Setup món danh sách món ăn yêu thích của từng User
   Future setFavoriteFoodUser() async {
     var snapshot =
-    await _firestore.collection('Favorite').doc(userFood.idUser).get();
+        await _firestore.collection('Favorite').doc(userFood.idUser).get();
     if (snapshot.exists) {
       favoriteFood = FavoriteFood.fromJson(snapshot.data());
     } else {
