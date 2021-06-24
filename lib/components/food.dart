@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class Food {
   String idFood;
   String name;

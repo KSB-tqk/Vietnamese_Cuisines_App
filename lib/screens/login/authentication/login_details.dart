@@ -110,7 +110,7 @@ class _LoginDetailState extends State<LoginDetail> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Text(
               "Đăng nhập ngay!",
