@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/notifier/authentication.dart';
 import 'package:provider/provider.dart';
@@ -78,6 +79,7 @@ class _SignUpDetailState extends State<SignUpDetail> {
             TextFormField(
               controller: passwordController,
               obscureText: true,
+              inputFormatters: [FilteringTextInputFormatter.deny(new RegExp('[\\.|\\,| -]'))],
               textInputAction: TextInputAction.next,
               validator: (val) =>
                   val.length < 6 ? "Mật khẩu phải lớn hơn 6 kí tự!" : null,
@@ -116,6 +118,7 @@ class _SignUpDetailState extends State<SignUpDetail> {
             TextFormField(
               controller: confirmPassController,
               keyboardType: TextInputType.text,
+              inputFormatters: [FilteringTextInputFormatter.deny(new RegExp('[\\.|\\,| -]'))],
               obscureText: true,
               textInputAction: TextInputAction.done,
               validator: (val) => val != passwordController.text
