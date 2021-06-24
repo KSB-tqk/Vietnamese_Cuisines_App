@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app_test/components/favorite.dart';
 import 'package:flutter_app_test/components/food.dart';
 import 'package:flutter_app_test/components/user.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthenticationService with ChangeNotifier {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -143,6 +144,24 @@ class AuthenticationService with ChangeNotifier {
     notifyListeners();
   }
 
+  Future changePassWord(String newPassWord) async {
+    await _firebaseAuth.currentUser.updatePassword(newPassWord);
+    notifyListeners();
+  }
+
+  // kiểm tra mật khẩu hiện tại của user
+  Future<bool> validateCurrentPassword(String passWord) async {
+    var authCredentials = EmailAuthProvider.credential(
+        email: _firebaseAuth.currentUser.email, password: passWord);
+    try {
+      var authResult = await _firebaseAuth.currentUser
+          .reauthenticateWithCredential(authCredentials);
+      return authResult.user != null;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    
   Future sendResetPassWord(String email) async {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
   }

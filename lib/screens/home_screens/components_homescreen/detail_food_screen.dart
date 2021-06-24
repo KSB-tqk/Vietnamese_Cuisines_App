@@ -88,28 +88,43 @@ class DetailFood extends StatelessWidget {
                             rating: food.rating,
                             isReadOnly: true,
                           ),
-                          Container(
-                            margin: EdgeInsets.only(right: 25),
-                            child: LikeButton(
-                              isLiked: authentication.favoriteFood.listIdFood
-                                  .contains(food.idFood),
-                              circleColor: CircleColor(
-                                  start: Colors.red[300], end: Colors.red[600]),
-                              bubblesColor: BubblesColor(
-                                dotPrimaryColor: Colors.red[400],
-                                dotSecondaryColor: Colors.red[400],
+                          Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(right: 25),
+                                child: LikeButton(
+                                  isLiked: authentication
+                                      .favoriteFood.listIdFood
+                                      .contains(food.idFood),
+                                  circleColor: CircleColor(
+                                      start: Colors.red[300],
+                                      end: Colors.red[600]),
+                                  bubblesColor: BubblesColor(
+                                    dotPrimaryColor: Colors.red[400],
+                                    dotSecondaryColor: Colors.red[400],
+                                  ),
+                                  likeBuilder: (bool isLiked) {
+                                    return Icon(
+                                      Icons.favorite,
+                                      color: isLiked
+                                          ? Colors.red[600]
+                                          : Colors.grey,
+                                      size: 35,
+                                    );
+                                  },
+                                  onTap: (bool) => onClickFavorFood(
+                                      bool, context, food.idFood),
+                                ),
                               ),
-                              likeBuilder: (bool isLiked) {
-                                return Icon(
-                                  Icons.favorite,
-                                  color:
-                                      isLiked ? Colors.red[600] : Colors.grey,
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.message_rounded,
                                   size: 35,
-                                );
-                              },
-                              onTap: (bool) =>
-                                  onClickFavorFood(bool, context, food.idFood),
-                            ),
+                                  color: Colors.blueAccent,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

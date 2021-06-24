@@ -1,11 +1,14 @@
 import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/components/comments.dart';
 import 'package:flutter_app_test/components/food.dart';
 import 'package:flutter_app_test/components/middlefood.dart';
 import 'package:flutter_app_test/components/northfood.dart';
 import 'package:flutter_app_test/components/southfood.dart';
 import 'package:flutter_app_test/components/topfood.dart';
+import 'package:flutter_app_test/notifier/authentication.dart';
+import 'package:provider/provider.dart';
 
 class FoodNotifier with ChangeNotifier {
   List<Food> _foodList = []; // danh sach food

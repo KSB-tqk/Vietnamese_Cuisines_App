@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/notifier/authentication.dart';
+import 'package:flutter_app_test/notifier/home_screen_notifier.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -14,17 +16,27 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   TextEditingController newUserNameController;
+  TextEditingController passWordController;
+  TextEditingController newPassWordController;
+  TextEditingController confirmNewPassWordController;
   final _formKey = GlobalKey<FormState>();
+  bool checkCurrentPasswordValid = true;
+
   @override
   void initState() {
     newUserNameController = TextEditingController();
+    passWordController = TextEditingController();
+    newPassWordController = TextEditingController();
+    confirmNewPassWordController = TextEditingController();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final authentication = Provider.of<AuthenticationService>(context);
-    // Size size = MediaQuery.of(context).size;
+    final homeScreenProvier = Provider.of<HomeScreenProvider>(context);
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -62,6 +74,9 @@ class _UserScreenState extends State<UserScreen> {
               // SizedBox(
               //   height: 10,
               // ),
+              SizedBox(
+                height: size.height * 0.1,
+              ),
               UserInfo(
                 iconData: Icon(
                   Icons.account_circle,
@@ -150,15 +165,21 @@ class _UserScreenState extends State<UserScreen> {
                       context: context,
                       title: "Thay đổi mật khẩu",
                       content: Form(
+                        key: _formKey,
                         child: Column(
                           children: <Widget>[
                             SizedBox(
                               height: 20,
                             ),
                             TextFormField(
+                              controller: passWordController,
                               keyboardType: TextInputType.text,
                               obscureText: true,
                               textInputAction: TextInputAction.next,
+                              validator: (check) => check =
+                                  checkCurrentPasswordValid
+                                      ? null
+                                      : "Mật khẩu hiện tại không chính xác!",
                               decoration: InputDecoration(
                                 icon: Icon(
                                   Icons.lock_clock_rounded,
@@ -184,9 +205,13 @@ class _UserScreenState extends State<UserScreen> {
                               height: 10,
                             ),
                             TextFormField(
+                              controller: newPassWordController,
                               obscureText: true,
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.next,
+                              validator: (val) => val.length < 6
+                                  ? "Mật khẩu phải lớn hơn 6 kí tự!"
+                                  : null,
                               decoration: InputDecoration(
                                 icon: Icon(
                                   Icons.lock_rounded,
@@ -212,9 +237,14 @@ class _UserScreenState extends State<UserScreen> {
                               height: 10,
                             ),
                             TextFormField(
+                              controller: confirmNewPassWordController,
                               obscureText: true,
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.done,
+                              validator: (val) =>
+                                  val != newPassWordController.text
+                                      ? "Xác nhận mật khẩu không chính xác!"
+                                      : null,
                               decoration: InputDecoration(
                                 icon: Icon(
                                   Icons.check_circle,
@@ -242,7 +272,33 @@ class _UserScreenState extends State<UserScreen> {
                       buttons: [
                         DialogButton(
                           color: kPrimaryColor,
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () async {
+                            checkCurrentPasswordValid =
+                                await authentication.validateCurrentPassword(
+                                    passWordController.text);
+                            if (_formKey.currentState.validate() &&
+                                checkCurrentPasswordValid) {
+                              await authentication
+                                  .changePassWord(newPassWordController.text);
+                              Navigator.pop(context);
+
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Thay đổi mật khẩu thành công!',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      backgroundColor: kPrimaryColor,
+                                      duration:
+                                          const Duration(milliseconds: 2000),
+                                    ),
+                                  )
+                                  .closed;
+                            }
+                          },
                           child: Text(
                             "Thay đổi",
                             style: TextStyle(color: Colors.white, fontSize: 20),
@@ -251,7 +307,7 @@ class _UserScreenState extends State<UserScreen> {
                       ]).show();
                 },
                 iconPress: Icon(Icons.arrow_forward_ios, color: Colors.grey),
-                textTitle: 'Change password',
+                textTitle: 'Thay đổi mật khẩu',
               ),
               SizedBox(
                 height: 30,
@@ -261,6 +317,7 @@ class _UserScreenState extends State<UserScreen> {
                 height: 50,
                 child: OutlinedButton(
                   onPressed: () {
+                    homeScreenProvier.currentIndex = 0;
                     authentication.signOut();
                   },
                   child: Row(
