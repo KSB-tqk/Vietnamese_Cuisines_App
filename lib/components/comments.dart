@@ -5,12 +5,14 @@ class Comment {
   String content;
   String dateCreated;
   String idUser;
+  String userName;
 
   Comment({
     @required this.commentID,
     @required this.content,
     @required this.dateCreated,
     @required this.idUser,
+    @required this.userName,
   });
 
   Comment.fromJson(Map<String, dynamic> json) {
@@ -18,6 +20,7 @@ class Comment {
     content = json['content'];
     dateCreated = json['dateCreated'];
     idUser = json['idUser'];
+    userName = json['userName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -26,6 +29,7 @@ class Comment {
     data['content'] = this.content;
     data['dateCreated'] = this.dateCreated;
     data['idUser'] = this.idUser;
+    data['userName'] = this.userName;
     return data;
   }
 }

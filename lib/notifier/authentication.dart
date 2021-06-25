@@ -5,6 +5,7 @@ import 'package:flutter_app_test/components/favorite.dart';
 import 'package:flutter_app_test/components/food.dart';
 import 'package:flutter_app_test/components/user.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthenticationService with ChangeNotifier {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;

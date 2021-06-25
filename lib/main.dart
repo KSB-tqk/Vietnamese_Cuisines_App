@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
+import 'package:flutter_app_test/notifier/comment_notifer.dart';
 import 'package:flutter_app_test/notifier/food_notifier.dart';
 import 'package:flutter_app_test/notifier/home_screen_notifier.dart';
 import 'package:flutter_app_test/screens/favorite_screen/favorite_screen.dart';
@@ -40,7 +41,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => HomeScreenProvider(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => FoodComment(),
+        ),
       ],
       child: MaterialApp(
         title: 'Vietnamese Cuisines App',

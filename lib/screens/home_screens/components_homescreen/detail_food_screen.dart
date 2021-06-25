@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/components/comments.dart';
 import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/components/food.dart';
 import 'package:flutter_app_test/notifier/authentication.dart';
+import 'package:flutter_app_test/notifier/comment_notifer.dart';
+import 'package:flutter_app_test/notifier/food_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:like_button/like_button.dart';
@@ -117,7 +120,22 @@ class DetailFood extends StatelessWidget {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    // enableDrag: false,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20),
+                                      ),
+                                    ),
+                                    context: context,
+                                    builder: (context) => SingleChildScrollView(
+                                        child: BuildSheet(
+                                      food: food,
+                                    )),
+                                  );
+                                },
                                 icon: Icon(
                                   Icons.message_rounded,
                                   size: 35,
@@ -200,5 +218,170 @@ class DetailFood extends StatelessWidget {
     }
     await authentication.updateFavoriteFood();
     return !isLike;
+  }
+}
+
+class BuildSheet extends StatelessWidget {
+  final Food food;
+  const BuildSheet({key, this.food}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final authentication = Provider.of<AuthenticationService>(context);
+    final comment = Provider.of<FoodComment>(context, listen: false);
+    Size size = MediaQuery.of(context).size;
+    return SizedBox.fromSize(
+      size: Size(size.width, size.height * 0.65),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Bình luận',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: kPrimaryColor,
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.03,
+            ),
+            Expanded(
+              child: FutureBuilder<List<Comment>>(
+                future: comment.getComment(food.idFood),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done ||
+                      !snapshot.hasData) {
+                    return Center(
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Không có bình luận nào!',
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                  List<Comment> listComment = snapshot.data;
+                  // Sắp xếp comments mới nhất
+                  listComment.sort((a, b) {
+                    var aDate = a.dateCreated;
+                    var bDate = b.dateCreated;
+                    return bDate.compareTo(aDate);
+                  });
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: listComment.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final i = listComment[index];
+                      return CommentItem(size: size, i: i);
+                    },
+                  );
+                },
+              ),
+            ),
+            Divider(
+              thickness: 1,
+              color: Colors.black45,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: TextField(
+                controller: comment.commentController,
+                decoration: InputDecoration(
+                  hintText: 'Nhập bình luận của bạn',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: kPrimaryColor, width: 2),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.send,
+                      color: kPrimaryColor,
+                    ),
+                    onPressed: () async {
+                      comment.addComment(
+                          food.idFood,
+                          authentication.userFood.idUser,
+                          authentication.userFood.userName);
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CommentItem extends StatelessWidget {
+  const CommentItem({
+    Key key,
+    @required this.size,
+    @required this.i,
+  }) : super(key: key);
+
+  final Size size;
+  final Comment i;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: size.width * 0.2,
+      width: size.width,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Wrap(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: Center(
+                child: ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        i.userName,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        i.dateCreated.substring(0, i.dateCreated.indexOf(' ')),
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ),
+                  subtitle: Text(
+                    i.content,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
