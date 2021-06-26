@@ -5,6 +5,7 @@ class Food {
   String location;
   String describe;
   String ingredients;
+  String recipe;
   double rating;
 
   Food(
@@ -14,6 +15,7 @@ class Food {
       this.location,
       this.describe,
       this.ingredients,
+      this.recipe,
       this.rating});
 
   Food.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class Food {
     location = json['location'];
     describe = json['describe'];
     ingredients = json['ingredients'];
+    recipe = json['recipe'];
     rating = json['rating'] * (1.0);
   }
 
@@ -34,6 +37,7 @@ class Food {
     data['location'] = this.location;
     data['describe'] = this.describe;
     data['ingredients'] = this.ingredients;
+    data['recipe'] = this.recipe;
     data['rating'] = this.rating;
     return data;
   }
