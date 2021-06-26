@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/notifier/authentication.dart';
 import 'package:flutter_app_test/notifier/home_screen_notifier.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -67,8 +67,13 @@ class _UserScreenState extends State<UserScreen> {
               // SizedBox(
               //   height: size.height * 0.15,
               //   width: size.height * 0.15,
-              //   child: CircleAvatar(
-              //     backgroundColor: kPrimaryColor,
+              //   child: InkWell(
+              //     onTap: () => authentication.getImage(),
+              //     child: CircleAvatar(
+              //       // backgroundImage:
+              //       //     _image != null ? FileImage(_image) : NetworkImage(""),
+              //       radius: 100,
+              //     ),
               //   ),
               // ),
               // SizedBox(
