@@ -4,7 +4,6 @@ import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/components/food.dart';
 import 'package:flutter_app_test/notifier/authentication.dart';
 import 'package:flutter_app_test/notifier/comment_notifer.dart';
-import 'package:flutter_app_test/notifier/food_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:like_button/like_button.dart';
@@ -17,6 +16,7 @@ class DetailFood extends StatelessWidget {
   Widget build(BuildContext context) {
     final Food food = (ModalRoute.of(context).settings.arguments as List)[0];
     final authentication = Provider.of<AuthenticationService>(context);
+    final step = food.recipe.split('#');
     //authentication.favoriteFood.listIdFood
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -44,13 +44,15 @@ class DetailFood extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
             Container(
               margin: EdgeInsets.only(top: size.height * 0.2),
               padding: EdgeInsets.only(top: size.height * 0.2),
-              height: size.height * 0.8,
+              width: size.width,
+              constraints: BoxConstraints(minHeight: size.height),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -157,10 +159,13 @@ class DetailFood extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: Text(
-                          food.describe,
+                          food.describe.replaceAll("% ", '\n'),
                           style: TextStyle(
                             fontSize: 15,
                           ),
@@ -177,12 +182,56 @@ class DetailFood extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: Text(
-                          food.ingredients.replaceAll(". ", '\n'),
+                          "${food.ingredients.replaceAll("% ", '\n')}",
                           style: TextStyle(
                             fontSize: 15,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.03,
+                      ),
+                      Text(
+                        "Cách chế biến",
+                        style: TextStyle(
+                          color: kPrimaryColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              for (int i = 0; i < step.length; i++)
+                                i % 2 == 0
+                                    ? TextSpan(
+                                        text: step[i],
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    : TextSpan(
+                                        text:
+                                            "${step[i].replaceAll("% ", '\n\n')}",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                            ],
                           ),
                         ),
                       ),
@@ -221,6 +270,7 @@ class DetailFood extends StatelessWidget {
   }
 }
 
+// load comment của từng food
 class BuildSheet extends StatelessWidget {
   final Food food;
   const BuildSheet({key, this.food}) : super(key: key);
@@ -329,6 +379,7 @@ class BuildSheet extends StatelessWidget {
   }
 }
 
+// widget comment show
 class CommentItem extends StatelessWidget {
   const CommentItem({
     Key key,
