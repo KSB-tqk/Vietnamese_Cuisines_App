@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/food.dart';
 import 'package:flutter_app_test/components/middlefood.dart';
 import 'package:flutter_app_test/components/northfood.dart';
+import 'package:flutter_app_test/components/reccommend.dart';
 import 'package:flutter_app_test/components/southfood.dart';
 import 'package:flutter_app_test/components/topfood.dart';
 
@@ -22,6 +23,9 @@ class FoodNotifier with ChangeNotifier {
   //south food
   SouthFood southFood;
   List<Food> southFoodList = [];
+  //reccommend food
+  ReccommendFood reccommendFood;
+  List<Food> reccommendFoodList = [];
 
   //find food
   List<Food> findFoodList = [];
@@ -62,6 +66,7 @@ class FoodNotifier with ChangeNotifier {
     await getNorthFood(foodNotifier);
     await getMiddleFood(foodNotifier);
     await getSouthFood(foodNotifier);
+    await getReccommendFood(foodNotifier);
     notifyListeners();
   }
 
@@ -119,6 +124,19 @@ class FoodNotifier with ChangeNotifier {
         .get();
     southFood = SouthFood.fromJson(snapshot.data());
     southFoodList = southFood.listSouthFood
+        .map((e) =>
+            _foodList.firstWhere((element) => element.idFood == e.toString()))
+        .toList();
+  }
+
+  // Lấy danh sách các món gợi ý
+  getReccommendFood(FoodNotifier reccommendFoodNotifer) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection('Food')
+        .doc('Reccommend')
+        .get();
+    reccommendFood = ReccommendFood.fromJson(snapshot.data());
+    reccommendFoodList = reccommendFood.listReccommend
         .map((e) =>
             _foodList.firstWhere((element) => element.idFood == e.toString()))
         .toList();

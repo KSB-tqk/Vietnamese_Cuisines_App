@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/components/constants.dart';
+import 'package:flutter_app_test/notifier/food_notifier.dart';
 import 'package:flutter_app_test/screens/home_screens/three_side_food/details_three_side_food/detail_middle_food.dart';
 import 'package:flutter_app_test/screens/home_screens/three_side_food/details_three_side_food/detail_north_food.dart';
 import 'package:flutter_app_test/screens/home_screens/three_side_food/details_three_side_food/detail_south_food.dart';
 import 'package:flutter_app_test/screens/home_screens/three_side_food/widget/food_three_side_card.dart';
+import 'package:provider/provider.dart';
 
 class TopDeliciousThreeSide extends StatelessWidget {
   const TopDeliciousThreeSide({
@@ -12,6 +14,7 @@ class TopDeliciousThreeSide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final food = Provider.of<FoodNotifier>(context);
     return Column(
       children: <Widget>[
         Padding(
@@ -53,7 +56,7 @@ class TopDeliciousThreeSide extends StatelessWidget {
               FoodThreeSideCard(
                 nameSide: "Ẩm thực miền Bắc",
                 imageSide: "assets/images/top_mien_bac.png",
-                numberOfFood: 10,
+                numberOfFood: food.northFoodList.length,
                 press: () {
                   Navigator.pushNamed(context, TopNorthFood.id);
                 },
@@ -61,7 +64,7 @@ class TopDeliciousThreeSide extends StatelessWidget {
               FoodThreeSideCard(
                 nameSide: "Ẩm thực miền Trung",
                 imageSide: "assets/images/top_mien_trung.png",
-                numberOfFood: 10,
+                numberOfFood: food.middleFoodList.length,
                 press: () {
                   Navigator.pushNamed(context, TopMiddleFood.id);
                 },
@@ -69,7 +72,7 @@ class TopDeliciousThreeSide extends StatelessWidget {
               FoodThreeSideCard(
                 nameSide: "Ẩm thực miền Nam",
                 imageSide: "assets/images/top_mien_nam.png",
-                numberOfFood: 10,
+                numberOfFood: food.southFoodList.length,
                 press: () {
                   Navigator.pushNamed(context, TopSouthFood.id);
                 },

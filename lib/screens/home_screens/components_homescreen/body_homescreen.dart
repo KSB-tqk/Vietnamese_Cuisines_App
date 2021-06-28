@@ -16,7 +16,7 @@ class BodyHomeScreen extends StatefulWidget {
 class _BodyHomeScreenState extends State<BodyHomeScreen> {
   @override
   Widget build(BuildContext context) {
-    FoodNotifier topSouthFoodNotifier = Provider.of<FoodNotifier>(context);
+    FoodNotifier reccommendFoodNotifier = Provider.of<FoodNotifier>(context);
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
@@ -54,9 +54,9 @@ class _BodyHomeScreenState extends State<BodyHomeScreen> {
             child: ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: topSouthFoodNotifier.southFoodList.length,
+              itemCount: reccommendFoodNotifier.reccommendFoodList.length,
               itemBuilder: (BuildContext context, int index) {
-                final i = topSouthFoodNotifier.southFoodList[index];
+                final i = reccommendFoodNotifier.reccommendFoodList[index];
                 return FoodItem(
                   food: i,
                 );

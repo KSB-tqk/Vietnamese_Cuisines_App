@@ -7,6 +7,7 @@ import 'package:flutter_app_test/notifier/comment_notifer.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:like_button/like_button.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class DetailFood extends StatelessWidget {
   static String id = 'DetailFood';
@@ -392,41 +393,40 @@ class CommentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dateTime = DateTime.parse(i.dateCreated);
+
     return Container(
-      height: size.width * 0.2,
-      width: size.width,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Wrap(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
               padding: EdgeInsets.all(5),
-              child: Center(
-                child: ListTile(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        i.userName,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
+              child: ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      i.userName,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
-                      Text(
-                        i.dateCreated.substring(0, i.dateCreated.indexOf(' ')),
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontStyle: FontStyle.italic,
-                        ),
+                    ),
+                    Text(
+                      timeago.format(dateTime),
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontStyle: FontStyle.italic,
                       ),
-                    ],
-                  ),
-                  subtitle: Text(
-                    i.content,
-                  ),
+                    ),
+                  ],
+                ),
+                subtitle: Text(
+                  i.content,
                 ),
               ),
             ),
