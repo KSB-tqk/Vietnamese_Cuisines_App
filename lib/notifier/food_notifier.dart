@@ -145,7 +145,7 @@ class FoodNotifier with ChangeNotifier {
   //Tìm danh sách món ăn
   searchForFood(String query) {
     findFoodList =
-        _foodList.where((element) => element.name.contains(query)).toList();
+        _foodList.where((element) => element.searchName.contains(query.toLowerCase())).toList();
     notifyListeners();
   }
 }
