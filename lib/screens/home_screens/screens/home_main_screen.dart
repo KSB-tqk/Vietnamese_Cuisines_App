@@ -36,7 +36,8 @@ class _HomeMainScreenState extends State<HomeMainScreen> {
             children: [
               TextSpan(
                   text: "Ẩm Thực ", style: TextStyle(color: Color(0xFFFE842D))),
-              TextSpan(text: "Việt Nam", style: TextStyle(color: Colors.grey)),
+              TextSpan(
+                  text: "Việt Nam", style: TextStyle(color: Colors.grey[600])),
             ],
           ),
         ),
