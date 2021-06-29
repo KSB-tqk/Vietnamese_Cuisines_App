@@ -21,15 +21,24 @@ import 'package:flutter_app_test/screens/splash/splash_screen.dart';
 import 'package:flutter_app_test/screens/user_screen/user_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // bool check = prefs.getBool('checkAppInstalled') ?? true;
+  // await prefs.setBool('checkAppInstalled', true);
+  runApp(MyApp(
+      // check: check,
+      ));
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  // final bool check;
+
+  // const MyApp({Key key, this.check}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
