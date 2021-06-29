@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Vietnamese Cuisines App',
+        title: 'VCuisines',
         debugShowCheckedModeBanner: false,
         routes: {
           SplashScreen.id: (context) => SplashScreen(),
