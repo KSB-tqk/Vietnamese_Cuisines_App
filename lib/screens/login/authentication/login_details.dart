@@ -32,14 +32,15 @@ class _LoginDetailState extends State<LoginDetail> {
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<AuthenticationService>(context);
     bool checkSnackBarShow = false;
+    final Size size = MediaQuery.of(context).size;
 
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: size.height * 0.02),
       child: Form(
         key: _formKey,
         child: Column(
           children: [
-            SizedBox(height: 10),
+            SizedBox(height: size.height * 0.01),
             // Nhập tài khoản email
             TextFormField(
               controller: emailController,
@@ -77,13 +78,15 @@ class _LoginDetailState extends State<LoginDetail> {
               ),
             ),
             SizedBox(
-              height: 10,
+              height: size.height * 0.01,
             ),
             // Nhập mật khẩu
             TextFormField(
               controller: passwordController,
               obscureText: true,
-              inputFormatters: [FilteringTextInputFormatter.deny(new RegExp('[\\.|\\,| -]'))],
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(new RegExp('[\\.|\\,| -]'))
+              ],
               validator: (val) =>
                   val.length < 6 ? "Mật khẩu phải lớn hơn 6 kí tự!" : null,
               decoration: InputDecoration(
@@ -117,7 +120,7 @@ class _LoginDetailState extends State<LoginDetail> {
             ),
 
             SizedBox(
-              height: 10,
+              height: size.height * 0.01,
             ),
             Text(
               "Đăng nhập ngay!",
@@ -127,7 +130,7 @@ class _LoginDetailState extends State<LoginDetail> {
               ),
             ),
             SizedBox(
-              height: 10,
+              height: size.height * 0.01,
             ),
             Text(
               "Cùng trải nghiệm ẩm thực Việt!",
@@ -137,11 +140,11 @@ class _LoginDetailState extends State<LoginDetail> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: size.height * 0.02,
             ),
             Container(
-              width: 200,
-              height: 50,
+              width: size.width * 0.5,
+              height: size.height * 0.06,
               child: OutlinedButton(
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {}
@@ -182,7 +185,7 @@ class _LoginDetailState extends State<LoginDetail> {
                     backgroundColor: kPrimaryColor),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: size.height * 0.02),
             TextButton(
                 onPressed: () {
                   Alert(

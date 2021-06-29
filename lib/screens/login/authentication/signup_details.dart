@@ -28,14 +28,15 @@ class _SignUpDetailState extends State<SignUpDetail> {
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<AuthenticationService>(context);
+    final Size size = MediaQuery.of(context).size;
     bool checkSnackBarShow = false;
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: EdgeInsets.only(top: size.height * 0.02),
       child: Form(
         key: _formKey,
         child: Column(
           children: [
-            SizedBox(height: 10),
+            SizedBox(height: size.height * 0.01),
             // Nhập tài khoản email
             TextFormField(
               controller: emailController,
@@ -73,13 +74,15 @@ class _SignUpDetailState extends State<SignUpDetail> {
               ),
             ),
             SizedBox(
-              height: 10,
+              height: size.height * 0.01,
             ),
             // Nhập mật khẩu
             TextFormField(
               controller: passwordController,
               obscureText: true,
-              inputFormatters: [FilteringTextInputFormatter.deny(new RegExp('[\\.|\\,| -]'))],
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(new RegExp('[\\.|\\,| -]'))
+              ],
               textInputAction: TextInputAction.next,
               validator: (val) =>
                   val.length < 6 ? "Mật khẩu phải lớn hơn 6 kí tự!" : null,
@@ -113,12 +116,14 @@ class _SignUpDetailState extends State<SignUpDetail> {
               ),
             ),
             SizedBox(
-              height: 10,
+              height: size.height * 0.01,
             ),
             TextFormField(
               controller: confirmPassController,
               keyboardType: TextInputType.text,
-              inputFormatters: [FilteringTextInputFormatter.deny(new RegExp('[\\.|\\,| -]'))],
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(new RegExp('[\\.|\\,| -]'))
+              ],
               obscureText: true,
               textInputAction: TextInputAction.done,
               validator: (val) => val != passwordController.text
@@ -154,11 +159,31 @@ class _SignUpDetailState extends State<SignUpDetail> {
               ),
             ),
             SizedBox(
-              height: 30,
+              height: size.height * 0.01,
+            ),
+            Text(
+              "Đăng ký tài khoản!",
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black54,
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
+            Text(
+              "Khám phá ẩm thực Việt!",
+              style: TextStyle(
+                fontSize: 14,
+                color: kPrimaryColor,
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.02,
             ),
             Container(
-              width: 200,
-              height: 50,
+              width: size.width * 0.5,
+              height: size.height * 0.06,
               child: OutlinedButton(
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {

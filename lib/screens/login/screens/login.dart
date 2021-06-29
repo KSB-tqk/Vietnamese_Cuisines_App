@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 top: size.height * 0.3,
                 child: Container(
                   padding: EdgeInsets.all(20),
-                  height: size.height * 0.52,
+                  height: size.height * 0.55,
                   width: MediaQuery.of(context).size.width - 40,
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
@@ -164,8 +164,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      if (isSignUpScreen) SignUpDetail(),
-                      if (!isSignUpScreen) LoginDetail(),
+                      if (isSignUpScreen)
+                        SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          child: SignUpDetail(),
+                        ),
+                      if (!isSignUpScreen)
+                        SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          child: LoginDetail(),
+                        ),
                     ],
                   ),
                 ),

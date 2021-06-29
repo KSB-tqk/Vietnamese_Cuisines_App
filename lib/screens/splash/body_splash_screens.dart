@@ -42,6 +42,7 @@ class _BodyState extends State<Body> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Expanded(
                     flex: 3,
@@ -76,7 +77,7 @@ class _BodyState extends State<Body> {
                           Spacer(flex: 3),
                           SizedBox(
                             width: double.infinity,
-                            height: 56,
+                            height: size.height * 0.08,
                             child: TextButton(
                               onPressed: () async {
                                 Navigator.pushNamed(
@@ -136,6 +137,7 @@ class SplashContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Column(
       children: <Widget>[
         Spacer(),
@@ -161,7 +163,7 @@ class SplashContent extends StatelessWidget {
         ),
         Image.asset(
           imageSplash,
-          height: 320,
+          height: size.height * 0.42,
         ),
       ],
     );
