@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app_test/components/constants.dart';
 import 'package:flutter_app_test/notifier/authentication.dart';
 import 'package:flutter_app_test/notifier/home_screen_notifier.dart';
@@ -245,6 +246,7 @@ class _UserScreenState extends State<UserScreen> {
                               controller: confirmNewPassWordController,
                               obscureText: true,
                               keyboardType: TextInputType.text,
+                              inputFormatters: [FilteringTextInputFormatter.deny(new RegExp('[\\.|\\,| -]'))],
                               textInputAction: TextInputAction.done,
                               validator: (val) =>
                                   val != newPassWordController.text
